@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Exams Summary</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Index Page Specific Styles */
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            border-bottom: none;
+        }
+        header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+        .cards-container .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .cards-container .card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .cards-container .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .cards-container .card p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        footer kbd {
+            background-color: var(--background-tertiary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-family-mono);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 IT Exams Summary</h1>
+            <p>Interactive Files</p>
+        </header>
+        <main class="cards-container">
+            <a href="Networking.html" class="card">
+                <i class="fas fa-network-wired"></i>
+                <h2>Computer Networks</h2>
+                <p>OSI, TCP/IP, IP Addressing, Protocols</p>
+            </a>
+            <a href="OS.html" class="card">
+                <i class="fas fa-desktop"></i>
+                <h2>Operating Systems</h2>
+                <p>Processes, Scheduling, Memory, Deadlocks</p>
+            </a>
+            <a href="Testing.html" class="card">
+                <i class="fas fa-vial"></i>
+                <h2>Software Testing</h2>
+                <p>STLC, Unit Testing, Bug Tracking</p>
+            </a>
+        </main>
+        <footer>
+            <p><kbd>Alt</kbd> + <kbd>↑</kbd>/<kbd>↓</kbd> to navigate | <kbd>Ctrl</kbd> + <kbd>P</kbd> to print</p>
+        </footer>
+    </div>
+</body>
+</html>
