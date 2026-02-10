@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   initTableOfContents();
   initCopyCodeButtons();
   initActiveSectionHighlight();
-  initMobileTOC();
   
   console.log('Shared JavaScript loaded successfully');
 });
@@ -105,24 +104,38 @@ function initTableOfContents() {
   tocList.className = 'toc-list';
   
   headings.forEach((heading, index) => {
-    // Add ID to heading if it doesn't have one
-    if (!heading.id) {
-      heading.id = heading.textContent.toLowerCase()
+    // Get existing ID or generate one
+    let headingId = heading.id;
+    
+    if (!headingId) {
+      // Generate ID from heading text
+      headingId = heading.textContent.toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
+      
+      // Make sure ID is unique
+      let counter = 1;
+      let baseId = headingId;
+      while (document.getElementById(headingId)) {
+        headingId = baseId + '-' + counter;
+        counter++;
+      }
+      
+      // Set the ID on the heading
+      heading.id = headingId;
     }
     
     // Add data attribute for section highlighting
-    heading.setAttribute('data-section', heading.id);
+    heading.setAttribute('data-section', headingId);
     
     const tocItem = document.createElement('li');
     tocItem.className = 'toc-item';
     
     const tocLink = document.createElement('a');
     tocLink.className = 'toc-link';
-    tocLink.href = '#' + heading.id;
+    tocLink.href = '#' + headingId;
     tocLink.textContent = heading.textContent;
-    tocLink.setAttribute('data-target', heading.id);
+    tocLink.setAttribute('data-target', headingId);
     
     tocItem.appendChild(tocLink);
     tocList.appendChild(tocItem);
@@ -145,8 +158,12 @@ function initTableOfContents() {
         
         // Close mobile TOC if open
         const tocMobile = document.querySelector('.toc');
+        const toggleBtn = document.querySelector('.toc-toggle');
         if (tocMobile && window.innerWidth < 768) {
           tocMobile.classList.remove('open');
+        }
+        if (toggleBtn) {
+          toggleBtn.classList.remove('active');
         }
       }
     });
@@ -181,48 +198,8 @@ function initTableOfContents() {
   }
 }
 
-// ============================================
-// COPY CODE BUTTONS
-// ============================================
-function initCopyCodeButtons() {
-  const codeBlocks = document.querySelectorAll('pre');
-  
-  codeBlocks.forEach((pre, index) => {
-    // Skip if already has copy button
-    if (pre.querySelector('.copy-btn')) {
-      return;
-    }
-    
-    // Create copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-btn';
-    copyBtn.textContent = 'Copy';
-    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
-    
-    // Add click event
-    copyBtn.addEventListener('click', function() {
-      const codeElement = pre.querySelector('code');
-      const codeText = codeElement ? codeElement.textContent : pre.textContent;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        // Show success state
-        this.textContent = 'Copied!';
-        this.classList.add('copied');
-        
-        // Reset after 2 seconds
-        setTimeout(() => {
-          this.textContent = 'Copy';
-          this.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy:', err);
-        this.textContent = 'Error';
-      });
-    });
-    
-    pre.appendChild(copyBtn);
-  });
-}
+
+
 
 // ============================================
 // ACTIVE SECTION HIGHLIGHTING
@@ -273,51 +250,9 @@ function initActiveSectionHighlight() {
 }
 
 // ============================================
-// MOBILE TOC TOGGLE
+// MOBILE TOC TOGGLE - REMOVED
+// The TOC is now always visible on mobile within the content flow
 // ============================================
-function initMobileTOC() {
-  // Check if we're on mobile
-  if (window.innerWidth >= 768) {
-    return;
-  }
-  
-  // Check if TOC exists
-  const toc = document.querySelector('.toc');
-  if (!toc) {
-    return;
-  }
-  
-  // Create toggle button
-  const toggleBtn = document.createElement('button');
-  toggleBtn.className = 'toc-toggle';
-  toggleBtn.innerHTML = '📋';
-  toggleBtn.setAttribute('aria-label', 'Toggle table of contents');
-  toggleBtn.title = 'Table of Contents';
-  
-  document.body.appendChild(toggleBtn);
-  
-  // Add toggle functionality
-  toggleBtn.addEventListener('click', function() {
-    toc.classList.toggle('open');
-    this.classList.toggle('active');
-  });
-  
-  // Close TOC when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!toc.contains(e.target) && !toggleBtn.contains(e.target)) {
-      toc.classList.remove('open');
-      toggleBtn.classList.remove('active');
-    }
-  });
-  
-  // Close TOC on resize to desktop
-  window.addEventListener('resize', function() {
-    if (window.innerWidth >= 768) {
-      toc.classList.remove('open');
-      toggleBtn.classList.remove('active');
-    }
-  });
-}
 
 // ============================================
 // SMOOTH SCROLL FOR ANCHOR LINKS
